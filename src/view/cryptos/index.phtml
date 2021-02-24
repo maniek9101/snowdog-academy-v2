@@ -1,0 +1,31 @@
+<?php use Snowdog\Academy\Model\Cryptocurrency;
+
+require_once(__DIR__ . '/../common/header.phtml'); ?>
+
+<div class="container">
+    <section id="cryptos-list" class="padded">
+        <h3>Cryptocurrencies list</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($this->getCryptocurrencies() as $currency): /** @var Cryptocurrency $currency */?>
+                <tr>
+                    <td><?= $currency->getSymbol() ?></td>
+                    <td><?= $currency->getName() ?></td>
+                    <td><?= number_format($currency->getPrice(), 2) ?> USD</td>
+                    <td><a href="/cryptos/buy/<?= $currency->getId() ?>">Buy</a></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<?php require_once(__DIR__ . '/../common/footer.phtml'); ?>
