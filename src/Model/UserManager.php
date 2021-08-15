@@ -73,4 +73,13 @@ class UserManager
             ':idUser' => $idUser
         ]);
     }
+
+    public function addFundsToUser(float $funds, int $idUser): void
+    {
+        $query = $this->database->prepare("UPDATE users SET funds = funds + :funds WHERE id = :idUser");
+        $query->execute([
+            ':funds' => $funds,
+            ':idUser' => $idUser
+        ]);
+    }
 }

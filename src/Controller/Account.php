@@ -30,6 +30,37 @@ class Account
         require __DIR__ . '/../view/account/index.phtml';
     }
 
+    public function addFunds(): void
+    {
+        $user = $this->userManager->getByLogin($_SESSION['login']);
+        if (!$user) {
+            header('Location: /login');
+            return;
+        }
+
+        $this->user = $user;
+
+        require __DIR__ . '/../view/account/addFunds.phtml';
+    }
+
+    public function addFundsPost(): void
+    {
+        $user = $this->userManager->getByLogin($_SESSION['login']);
+        if (!$user) {
+            header('Location: /login');
+            return;
+        }
+
+        $this->user = $user;
+        $idUser = $this->user->getId();
+        $funds = $_POST['fundsValue'];
+        
+        $this->userManager->addFundsToUser($funds, $idUser);
+
+        $_SESSION['flash'] = "You have successfully added new funds, congratulations.";
+        header('location: /account');
+    }
+
     public function getUserCryptocurrencies(): array
     {
         $user = $this->userManager->getByLogin($_SESSION['login']);
