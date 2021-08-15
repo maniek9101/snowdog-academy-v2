@@ -64,4 +64,13 @@ class UserManager
             ':idUser' => $idUser
         ]);
     }
+
+    public function balanceFundsBySellCryptocurrency(float $cost, int $idUser): void
+    {
+        $query = $this->database->prepare("UPDATE users SET funds = funds + :cost WHERE id = :idUser");
+        $query->execute([
+            ':cost' => $cost,
+            ':idUser' => $idUser
+        ]);
+    }
 }
