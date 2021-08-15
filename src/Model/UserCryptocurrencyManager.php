@@ -22,9 +22,29 @@ class UserCryptocurrencyManager
         return $query->fetchAll(Database::FETCH_CLASS, UserCryptocurrency::class);
     }
 
-    public function addCryptocurrencyToUser(int $userId, Cryptocurrency $cryptocurrency, int $amount): void
+    public function addCryptocurrencyToUser(int $userId, Cryptocurrency $cryptocurrency, int $amount, bool $userHaveThisCrypto): void
     {
-        // TODO
+        $cryptocurrencyId = $cryptocurrency->getId();
+
+        if ($userHaveThisCrypto) {
+            $query = $this->database->prepare("UPDATE user_cryptocurrencies SET amount = amount + :amount WHERE 
+            user_id = :user_id AND
+            cryptocurrency_id = :cryptocurrency_id");
+
+            $query->execute([
+            ':amount' => $amount,
+            ':user_id' => $userId,
+            ':cryptocurrency_id' => $cryptocurrencyId
+            ]);
+        } else {
+            $query = $this->database->prepare("INSERT INTO user_cryptocurrencies (user_id, cryptocurrency_id, amount) VALUES (:userId, :cryptocurrencyId, :amount)");
+            
+            $query->execute([
+            ':userId' => $userId,
+            ':cryptocurrencyId' => $cryptocurrencyId,
+            ':amount' => $amount,
+            ]);
+        }
     }
 
     public function subtractCryptocurrencyFromUser(int $userId, Cryptocurrency $cryptocurrency, int $amount): void

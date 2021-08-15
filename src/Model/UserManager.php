@@ -55,4 +55,13 @@ class UserManager
     {
         return hash('sha512', $password);
     }
+
+    public function balanceFundsbyBuyCryptocurrency(float $cost, int $idUser): void
+    {
+        $query = $this->database->prepare("UPDATE users SET funds = funds - :cost WHERE id = :idUser");
+        $query->execute([
+            ':cost' => $cost,
+            ':idUser' => $idUser
+        ]);
+    }
 }
