@@ -16,6 +16,6 @@ class LogoutMenu extends AbstractMenu
 
     public function isVisible(): bool
     {
-        return (bool) $_SESSION['login'];
+        return (bool) @$_SESSION['login'];
     }
 }

@@ -16,6 +16,6 @@ class AccountMenu extends AbstractMenu
 
     public function isVisible(): bool
     {
-        return !!$_SESSION['login'];
+        return !!@$_SESSION['login'];
     }
 }
